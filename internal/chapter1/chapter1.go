@@ -1,6 +1,9 @@
 package chapter1
 
-import "net/http"
+import (
+	"encoding/json"
+	"net/http"
+)
 
 func GetEcho(w http.ResponseWriter, r *http.Request) {
 	//FIXME: Getメソッドのアクセスか確認
@@ -20,14 +23,11 @@ func GetEcho(w http.ResponseWriter, r *http.Request) {
 	params := r.Form
 
 	//FIXME: パラメータをレスポンスに書き出す
-	for key, values := range params {
-		for _, value := range values {
-			_, err := w.Write([]byte(key + ": " + value + "\n"))
-			if err != nil {
-				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-				return
-			}
-		}
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(params)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
 	}
 
 	//FIXME: レスポンスコード設定
