@@ -16,6 +16,7 @@ func main() {
 
 	// FIXME: ハンドラ追加時はこちらにコードを追加してください
 	mux.HandleFunc("/get", chapter2.Get)
+	mux.HandleFunc("/post", chapter2.Post)
 
 	if err := http.ListenAndServe("0.0.0.0:8080", mux); err != nil {
 		log.Fatalf("failed to launch service: %+v", err)
